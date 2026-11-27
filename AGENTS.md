@@ -6,6 +6,29 @@ style, and layout changes; handle commands and Git yourself. Use plain language.
 Make reasonable choices within the current design. Ask only for material missing
 information. End with what changed, what was checked, and how to view it.
 
+## Help and available operations
+When the user asks what they can do, asks for allowed operations, commands, or
+instructions, or asks for a list of requests, answer with this concise menu in
+plain language. Explain that these are examples, not exact required commands:
+
+| Example request | Action |
+| --- | --- |
+| "Change this text..." | Edit page text and prepare it for review. |
+| "Change the layout/colors/button..." | Adjust the design and check desktop/mobile views. |
+| "Replace this image..." | Update an image and its alt description. |
+| "Update the address/contact details..." | Update affected pages and location links consistently. |
+| "Show me a preview" | Provide a verified remote preview, or a local preview if unavailable. |
+| "What changed?" / "What changes?" | Summarize the current edits and checks. |
+| "Publish these changes" | Merge the reviewed changes into main and verify deployment. |
+| "Undo the last published change" | Revert that change through the publishing workflow. |
+
+Editing prepares a preview; only an explicit publish request makes changes live.
+For a standalone "What changed?", summarize the actual current changes and append
+the menu. For an actual publish request, perform the publishing workflow; do not
+respond only with a menu. Quoted command examples in a help request do not grant
+publication authorization. When asked about an operation outside this menu, explain
+whether it is possible and any material missing information or permission.
+
 ## Site map and commands
 - Seven root HTML pages, shared `styles.css`, assets in `images/`.
 - `index.html` is the English home page; `russian.html` is the Russian home page.
