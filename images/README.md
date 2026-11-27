@@ -1,22 +1,17 @@
-# Images Directory
+# Website images
 
-Please download the following images from www.marlev.com and place them in this directory:
+These assets are already included and referenced by the HTML pages:
 
-1. **Practice_Banner1.gif** - Header banner for all pages
-2. **LeraWeb5.JPG** - Profile photo of Valerie Sadovsky
-3. **bottles2.jpg** - Homeopathy vials image
-4. **Iceberg.jpg** - Iceberg illustration for homeopathy depth concept
-5. **Library.jpg** - Library/resources illustration
-6. **flu.gif** - Flu symptoms illustration
+- `Practice_Banner1.gif`: shared header banner
+- `LeraWeb5.JPG`: practitioner portrait (used by the site)
+- `LeraWeb5.jpeg`: additional copy of the portrait
+- `bottles2.jpg`: homeopathy vials
+- `Iceberg.jpg`: illustration on the about page
+- `Library.jpg`: resources illustration
+- `flu.gif`: acute conditions illustration
 
-## How to download:
-
-Visit the following URLs and save each image:
-- http://www.marlev.com/images/Practice_Banner1.gif
-- http://www.marlev.com/images/LeraWeb5.JPG
-- http://www.marlev.com/images/bottles2.jpg
-- http://www.marlev.com/images/Iceberg.jpg
-- http://www.marlev.com/images/Library.jpg
-- http://www.marlev.com/images/flu.gif
-
-Save each file with the exact filename shown above into this images/ directory.
+Preserve exact filename capitalization: production hosting is case-sensitive.
+For replacements, use an appropriate image size, retain meaningful alt text,
+and check every affected page at desktop and mobile widths. Remove an old asset
+only after checking it has no remaining references. Run
+`python3 scripts/check_site.py` from the repository root after editing references.
