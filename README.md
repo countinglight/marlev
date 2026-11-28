@@ -3,7 +3,9 @@
 Static HTML/CSS website for Athena Holistic Health. Source repository:
 https://github.com/countinglight/marlev.
 
-Cloudflare hosts the site as a Worker and automatically deploys GitHub `main`.
+Cloudflare Pages currently hosts the production site. GitHub’s default branch
+has been renamed to `master`; confirm Pages’ production branch is also `master`
+before the next publication.
 There is no build step or dependency installation for the site itself. This
 repository does not contain the Cloudflare dashboard configuration; keep the
 existing deployment settings. Branch protection is intentionally deferred.
@@ -22,7 +24,7 @@ Ask for adjustments in the same chat. When satisfied, say:
 
 > Publish these changes.
 
-The agent merges the reviewed change into `main`, triggering Cloudflare. It should
+The agent merges the reviewed change into `master`, triggering Cloudflare. It should
 confirm the deployed result or explicitly say what it could not verify. To undo:
 
 > Undo the last published change.
@@ -30,30 +32,47 @@ confirm the deployed result or explicitly say what it could not verify. To undo:
 The agent uses a revert, preserving history. Keep one editing chat active per
 checkout. Concurrent edits require separate checkouts/worktrees.
 
-## Local preview and checks
+## Node/Wrangler preview and checks
 
-Python 3 is the only local requirement:
+The migration tooling is on `vlads-dev`. Public HTML/CSS stays at its existing
+paths until the external editing pass is imported. See [migration plan](migration/README.md).
+
+Use Node 22 (pinned in `.nvmrc`), npm 10, and Python 3 for the existing checker:
 
 ```sh
-./serve.sh
-python3 scripts/check_site.py
-git diff --check
+npm ci
+npm run build
+npm run check:baseline
+npm run preview:site
 ```
 
-Preview: http://127.0.0.1:8000. Stop with Ctrl+C. To choose a different port:
-`./serve.sh 8001`. The server binds only to this computer and serves the repository
-regardless of which directory the command is launched from. Do not expose this
-repository server to the internet; it also contains development files.
+Open http://127.0.0.1:8787. The preview watches source HTML/CSS/images, copies
+public assets into ignored `dist/`, and serves them through Cloudflare’s local
+Wrangler runtime with live reload. No Cloudflare login is needed locally.
+Ctrl+C stops it. Use `npm run preview:site -- --port 8788` for another port. Generated output is disposable; edit the source files, not dist/.
+`npm run preview:built` serves an existing build without the source watcher.
+`./serve.sh` remains the legacy Python fallback on port 8000.
 
-The dependency-free checker validates local HTML links and fragments, image and
-stylesheet references (including CSS URLs), duplicate IDs, basic document metadata,
-and image alt attributes. It reports the known placeholder form and three existing missing article
-fragments (`vitamins`, `flu`, `fever`) as warnings. All other missing local
-references fail the check.
-It does not validate all HTML/CSS syntax, check external websites or form delivery,
-or replace browser inspection. Inspect visual edits at desktop and mobile widths.
-The GitHub Actions `Site checks` workflow runs the same structural check on pull
-requests and pushes to `main`; it does not deploy or protect the branch.
+The build validates local links, fragments, image/stylesheet references, duplicate
+IDs, metadata, and image alt attributes using the existing Python checker. Four
+existing warnings remain: the placeholder contact form and three missing article
+fragments. It does not replace browser inspection or test third-party services.
+`check:baseline` verifies the temporary HTML/CSS freeze; update that manifest only
+after reviewing the external edits. CI runs both checks for PRs and pushes to
+`master` and `vlads-dev` once this workflow is present on those branches.
+
+For the separate test Worker only:
+
+```sh
+npx wrangler login
+npm run deploy:test
+```
+
+`wrangler.site.jsonc` names `marlev-site-preview`, publishes only `dist/`, and
+contains no production routes/domains. This command does not migrate production.
+Actual deployment needs authenticated account access; the files alone do not
+create a Cloudflare Worker. Continue normal publication through GitHub and Pages
+until the migration is reviewed and cut over.
 
 ## Site files
 
@@ -81,15 +100,14 @@ applied consistently. The Russian page has intentionally different navigation.
 2. Configure the harness to permit routine checks, branch commits/pushes, and PR
    management under your preferred permission policy. Instructions do not override
    the harness sandbox or account permissions. There is no need for a Git plugin.
-3. In the existing Worker's Cloudflare dashboard, confirm the GitHub repository,
-   `main` production branch, live domain, and deployment status visibility.
-   Enable/configure branch previews if desired; they are not established by these
-   repository files. Do not change working production settings just to add previews.
-4. Until remote previews are configured, review locally on the editor's computer.
-   With remote previews, ensure the agent can retrieve their real URLs from build
-   output, deployment checks, PR comments, or an authorized integration.
+3. In the existing Pages project’s Cloudflare dashboard, confirm the GitHub repository,
+   `master` production branch, live domain, and deployment status visibility.
+   Pages previews already work. Retrieve their exact links from the Cloudflare
+   GitHub check output.summary; do not guess them.
+4. Use the Node/Wrangler preview locally or the exact Pages preview reported
+   for the branch commit. Keep migration publication separate from content review.
 5. Exercise an edit, preview, publish, and revert before handing over. Later,
-   protect `main` and require `Site checks / check` once the workflow has run.
+   protect `master` and require `Site checks / check` once the workflow has run.
 
 Publishing merges the PR using authenticated `gh`; Cloudflare performs deployment.
 The editor's machine does not need a Cloudflare deployment token for this flow.
@@ -101,8 +119,8 @@ rule, not an enforced access boundary.
 - `contact.html` contains Formspree `YOUR_FORM_ID`. The form is not operational;
   the displayed email and phone links remain available. The owner must supply
   a real endpoint before form delivery can be configured and tested.
-- Remote branch previews, production domain, and Cloudflare status access must
-  be confirmed in the dashboard. The expected public domain is www.marlev.com.
+- Pages previews are confirmed. The production-branch rename must be checked
+  in the dashboard; the live domain is www.marlev.com.
 - Three article cards link to absent sections (`#vitamins`, `#flu`, `#fever`).
   Their missing content needs an editorial decision; it has not been invented.
 - External links, embedded maps, and third-party services are not checked offline.

@@ -23,3 +23,11 @@ Desktop.ini
 *.tmp
 *.bak
 *.old
+
+# Node tooling and generated public files
+node_modules/
+dist/
+.wrangler/
+.dev.vars*
+.env*
+__pycache__/
