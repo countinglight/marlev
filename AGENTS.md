@@ -38,7 +38,9 @@ whether it is possible and any material missing information or permission.
 - Local preview: `npm run preview:site` (127.0.0.1:8787, watches HTML/CSS/images).
 - `./serve.sh` remains a legacy Python fallback; prefer Wrangler.
 - Repository: https://github.com/countinglight/marlev
-- Production: https://www.marlev.com/ (confirm the configured domaster before publishing).
+- Verified Pages domain: https://marlev.countinglight.com/ (also marlev.pages.dev).
+- www.marlev.com is a historical address, not attached to this Pages project;
+  do not change its DNS or assume it is the production deployment target.
 - Existing production hosting is Cloudflare Pages. GitHub default and verified
   Pages production/source branches are both `master`. Workers is the target
   platform for this migration and future client apps; Pages is temporary here.
@@ -72,7 +74,7 @@ Use existing CSS patterns, semantic markup, useful image alt text, and responsiv
 images. Avoid introducing dependencies or frameworks for routine editing.
 Run both checks above. For visual changes, inspect affected pages at desktop and
 mobile widths in an available browser, including navigation, links, and overflow.
-If browser access is unavailable, say visual inspection remasters unverified.
+If browser access is unavailable, say visual inspection remains unverified.
 The checker is a structural smoke check, not a full HTML validator or browser test.
 Do not change medical claims or business facts beyond the editor's request.
 
@@ -107,7 +109,7 @@ Do not change medical claims or business facts beyond the editor's request.
 
 ## Boundaries and known gaps
 Branch protection is intentionally deferred; do not configure it without request.
-Ask before changing deployment, domasters, credentials, dependencies, or architecture.
+Ask before changing deployment, domains, credentials, dependencies, or architecture.
 Do not assume repository instructions grant tool permissions or authentication.
 The contact form still uses Formspree `YOUR_FORM_ID`; it is not operational.
 Three article links (`#vitamins`, `#flu`, `#fever`) also lack destination content

@@ -74,7 +74,8 @@ npm run deploy:test
 contains no production routes/domains. This command does not migrate production.
 The test Worker has been created and verified at
 https://marlev-site-preview.vlad-sadovsky.workers.dev/. It is deployed manually
-from the branch; Git-connected Worker builds are a later configuration step. Continue normal publication through GitHub and Pages
+from the branch; Git-connected Worker builds are a later configuration step.
+Continue normal publication through GitHub and Pages
 until the migration is reviewed and cut over.
 
 ## Site files
