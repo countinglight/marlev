@@ -9,14 +9,14 @@
   },
   "packageManager": "npm@10.9.8",
   "scripts": {
-    "check": "python3 scripts/check_site.py",
+    "check": "node scripts/check-site.mjs",
     "build": "npm run check && node scripts/build-site.mjs && npm run check:dist",
     "build:site": "npm run build",
     "dev": "node scripts/preview-site.mjs",
     "preview:site": "node scripts/preview-site.mjs",
     "preview:built": "wrangler dev --config wrangler.site.jsonc --ip 127.0.0.1 --port 8787",
     "deploy:site": "npm run build && wrangler deploy --config wrangler.site.jsonc",
-    "check:dist": "python3 scripts/check_site.py --root dist",
+    "check:dist": "node scripts/check-site.mjs --root dist",
     "verify:import": "node scripts/verify-import.mjs",
     "preview:branch": "npm run build && wrangler preview --config wrangler.site.jsonc"
   },
