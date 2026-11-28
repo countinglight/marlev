@@ -18,7 +18,7 @@ needed to merge. Domain transfer is a separate final approval during migration.
 
 ## Local setup and preview
 
-Use Node 22 (`.nvmrc` pins 22.20.0), npm 10, and Python 3 for the structural checker.
+Use Node 22 (`.nvmrc` pins 22.20.0) and npm 10. No Python installation is needed.
 
 ```sh
 npm ci
@@ -29,8 +29,9 @@ npm run preview:site
 Open http://127.0.0.1:8787. The server binds to loopback, watches site/ recursively,
 and rebuilds public assets with live reload. Ctrl+C stops it. For another port:
 `npm run preview:site -- --port 8788`. `npm run preview:built` serves an existing
-build without the source watcher. The legacy `./serve.sh` serves site/ with Python
-on port 8000; prefer Wrangler. Edit site/, never generated dist/.
+build without the source watcher. The legacy `./serve.sh` is a Node-based
+compatibility wrapper for the preview on port 8000. Edit site/, never generated
+dist/.
 
 The build validates source and generated output: local links/fragments, images,
 stylesheets, metadata, IDs, and alt attributes. It is not a full HTML/CSS validator

@@ -14,4 +14,4 @@ Preserve exact filename capitalization: production hosting is case-sensitive.
 For replacements, use an appropriate image size, retain meaningful alt text,
 and check every affected page at desktop and mobile widths. Remove an old asset
 only after checking it has no remaining references. Run
-`python3 scripts/check_site.py` from the repository root after editing references.
+`npm run check` from the repository root after editing references.

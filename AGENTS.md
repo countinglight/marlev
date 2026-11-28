@@ -36,7 +36,7 @@ whether it is possible and any material missing information or permission.
 - Check/build: `npm run build` and `git diff --check`.
 - Install: `npm ci`. Wrangler is pinned in package-lock.json.
 - Local preview: `npm run preview:site` (127.0.0.1:8787, watches site/ recursively).
-- `./serve.sh` remains a legacy Python fallback; prefer Wrangler.
+- `./serve.sh` remains a legacy compatibility wrapper around the Node preview.
 - Repository: https://github.com/countinglight/marlev
 - Current public website: https://marlev.countinglight.com/, served by Cloudflare Workers.
 - Worker internal name: marlev-site-preview. Despite its historical name, it now
