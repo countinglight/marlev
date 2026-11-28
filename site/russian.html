@@ -7,6 +7,7 @@
     <meta name="keywords" content="гомеопатия, гомеопатическое лечение, классическая гомеопатия, Редмонд, Сиэтл, Вашингтон, холистическое здоровье">
     <title>Athena Holistic Health - Классическая Гомеопатия в Редмонде, штат Вашингтон</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="menu.js" defer></script>
 </head>
 <body>
     <header>
@@ -22,7 +23,11 @@
 
     <nav>
         <div class="container">
-            <ul>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>Меню</span>
+            </button>
+            <ul id="site-menu">
                 <li><a href="russian.html" class="active">Главная</a></li>
                 <li><a href="index.html">English Version</a></li>
                 <li><a href="contact.html">Контакты</a></li>
