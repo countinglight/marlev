@@ -7,7 +7,11 @@ import re
 import sys
 from urllib.parse import unquote, urlsplit
 
-ROOT = Path(__file__).resolve().parents[1]
+import argparse
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1] / 'site')
+ROOT = parser.parse_args().root.resolve()
 # Existing article destinations have no supplied content. Keep visible warnings
 # without hiding any new broken links or inventing article/medical content.
 KNOWN_MISSING_FRAGMENTS = {('articles.html', item) for item in ('vitamins', 'flu', 'fever')}
@@ -76,7 +80,7 @@ def css_urls(text):
 def main():
     errors, warnings = [], []
     pages = {}
-    for path in sorted(ROOT.glob('*.html')):
+    for path in sorted(ROOT.rglob('*.html')):
         page = Page(path)
         try:
             page.feed(path.read_text(encoding='utf-8'))
@@ -132,7 +136,7 @@ def main():
     for path, page in pages.items():
         for line, value in page.refs:
             check_ref(path, line, value)
-    for path in sorted(ROOT.glob('*.css')):
+    for path in sorted(ROOT.rglob('*.css')):
         try:
             for value in css_urls(path.read_text(encoding='utf-8')):
                 check_ref(path, 'CSS', value)

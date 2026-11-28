@@ -1,0 +1,14 @@
+{
+  "description": "Pre-migration HTML/CSS baseline. Do not regenerate until external edits have been reviewed.",
+  "commit": "7b3b680f96ef27cb39219a50d0111fa7f3b059ee",
+  "files": {
+    "about-homeopathy.html": "1d1387a4e0d473363f2a539e56b82e0fde1e74f73570bfed909277230e2709a5",
+    "acute-conditions.html": "567f06ff52620e87f0908c9470083291536b9363ddf2c4058a837ad83a10d48d",
+    "articles.html": "67a39faeff1b62a97bb838321e3441d4840eecf4530b711471ee4946dc96e604",
+    "contact.html": "26f0d2e3f1ecf4db9238d0433f246b9065310282d14219949dd2c9c185af2f7e",
+    "directions.html": "1bd2134c5cd269a68c010bd29f62568bd3cc810f1c02f9b5993b2ad3fd09cb70",
+    "index.html": "635cc87af4452c88b3318e6b821cd4ade4e1a81705ad25d95d73f5e6a8a783bd",
+    "russian.html": "f41ef67c8f0f7c429d620aed500109e1fa20c12bdacd7afa924f7851f3401c73",
+    "styles.css": "c4e0beacb8c1c57274783460f54c55be48647847e9a57b4f5d26441fe13277e2"
+  }
+}

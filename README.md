@@ -1,115 +1,100 @@
 # Athena Holistic Health website
 
-Static HTML/CSS website for Athena Holistic Health. Source repository:
-https://github.com/countinglight/marlev.
+Repository: https://github.com/countinglight/marlev. Default branch: `master`.
+Migration and imported content are on `vlads-dev`, under review in PR #3.
 
-Cloudflare hosts the site as a Worker and automatically deploys GitHub `main`.
-There is no build step or dependency installation for the site itself. This
-repository does not contain the Cloudflare dashboard configuration; keep the
-existing deployment settings. Branch protection is intentionally deferred.
+The website is hand-authored HTML/CSS in `site/`. Node/Wrangler builds public-only
+`dist/` and provides local preview. Future client apps have separate source and
+tooling under `apps/` (see apps/README.md). No mobile infrastructure is included.
 
-## Editing through chat
+## Edit through chat
 
-Open this repository in Codex or Claude Code. `AGENTS.md` defines the shared
-workflow; `CLAUDE.md` imports it for Claude Code.
+Open this repository in Codex or Claude Code. `AGENTS.md` defines the workflow;
+`CLAUDE.md` imports it. Ask for text, images, or layout changes in ordinary language.
+Ask “What can I do?” for the operations menu, “What changed?” for a summary, or
+“Show me a preview” to review. The agent handles checks, commits, pushes, and PRs.
+An editing request prepares changes for review; an explicit publishing request is
+needed to merge. Domain transfer is a separate final approval during migration.
 
-Tell the agent what you want, for example:
+## Local setup and preview
 
-> Make the home page introduction shorter and make the contact button more visible.
-
-The agent edits on a branch, checks the site, commits, and provides a preview.
-Ask for adjustments in the same chat. When satisfied, say:
-
-> Publish these changes.
-
-The agent merges the reviewed change into `main`, triggering Cloudflare. It should
-confirm the deployed result or explicitly say what it could not verify. To undo:
-
-> Undo the last published change.
-
-The agent uses a revert, preserving history. Keep one editing chat active per
-checkout. Concurrent edits require separate checkouts/worktrees.
-
-## Local preview and checks
-
-Python 3 is the only local requirement:
+Use Node 22 (`.nvmrc` pins 22.20.0), npm 10, and Python 3 for the structural checker.
 
 ```sh
-./serve.sh
-python3 scripts/check_site.py
-git diff --check
+npm ci
+npm run build
+npm run preview:site
 ```
 
-Preview: http://127.0.0.1:8000. Stop with Ctrl+C. To choose a different port:
-`./serve.sh 8001`. The server binds only to this computer and serves the repository
-regardless of which directory the command is launched from. Do not expose this
-repository server to the internet; it also contains development files.
+Open http://127.0.0.1:8787. The server binds to loopback, watches site/ recursively,
+and rebuilds public assets with live reload. Ctrl+C stops it. For another port:
+`npm run preview:site -- --port 8788`. `npm run preview:built` serves an existing
+build without the source watcher. The legacy `./serve.sh` serves site/ with Python
+on port 8000; prefer Wrangler. Edit site/, never generated dist/.
 
-The dependency-free checker validates local HTML links and fragments, image and
-stylesheet references (including CSS URLs), duplicate IDs, basic document metadata,
-and image alt attributes. It reports the known placeholder form and three existing missing article
-fragments (`vitamins`, `flu`, `fever`) as warnings. All other missing local
-references fail the check.
-It does not validate all HTML/CSS syntax, check external websites or form delivery,
-or replace browser inspection. Inspect visual edits at desktop and mobile widths.
-The GitHub Actions `Site checks` workflow runs the same structural check on pull
-requests and pushes to `main`; it does not deploy or protect the branch.
+The build validates source and generated output: local links/fragments, images,
+stylesheets, metadata, IDs, and alt attributes. It is not a full HTML/CSS validator
+or third-party-service test. Check visual changes in desktop and mobile browsers.
 
-## Site files
+## Website files
 
-| File | Purpose |
+| File in site/ | Purpose |
 | --- | --- |
-| `index.html` | English home page |
-| `russian.html` | Russian home page |
-| `about-homeopathy.html` | About homeopathy |
-| `acute-conditions.html` | Acute conditions |
-| `articles.html` | Articles and resources |
-| `contact.html` | Contact information and form |
-| `directions.html` | Office directions and map |
-| `styles.css` | Shared styles and color variables |
-| `images/` | Existing photographs and illustrations |
+| index.html | English home page |
+| russian.html | Russian home page |
+| about-homeopathy.html | About homeopathy |
+| acute-conditions.html | Acute conditions |
+| articles.html | Articles, resources, meditation audio |
+| online-payments.html | Supplied payment information and PayPal link |
+| contact.html | Contact information and placeholder form |
+| directions.html | Office map and arrival information |
+| styles.css | Shared styles |
+| images/, audio/ | Public media |
 
-Headers, navigation, and footers are repeated in HTML; shared changes must be
-applied consistently. The Russian page has intentionally different navigation.
+Shared headers/navigation/footers are repeated in HTML. Keep shared changes
+consistent while preserving the Russian page’s intentionally different navigation.
+The imported copy’s current office is 8201 164th Ave NE, Suite 200, Redmond, WA 98052.
 
-## One-time owner setup
+## Hosting during migration
 
-1. On the editor's computer, open her own clone in the chosen agent and install
-   Python 3, Git, and GitHub CLI (`gh`). Authenticate her own GitHub account with
-   repository access: `gh auth login`, then `gh auth setup-git`. Check with
-   `gh auth status` and `git fetch origin`. Do not store tokens in this repository.
-2. Configure the harness to permit routine checks, branch commits/pushes, and PR
-   management under your preferred permission policy. Instructions do not override
-   the harness sandbox or account permissions. There is no need for a Git plugin.
-3. In the existing Worker's Cloudflare dashboard, confirm the GitHub repository,
-   `main` production branch, live domain, and deployment status visibility.
-   Enable/configure branch previews if desired; they are not established by these
-   repository files. Do not change working production settings just to add previews.
-4. Until remote previews are configured, review locally on the editor's computer.
-   With remote previews, ensure the agent can retrieve their real URLs from build
-   output, deployment checks, PR comments, or an authorized integration.
-5. Exercise an edit, preview, publish, and revert before handing over. Later,
-   protect `main` and require `Site checks / check` once the workflow has run.
+Existing production is Cloudflare Pages at https://marlev.countinglight.com/ and
+https://marlev.pages.dev/. Its production/source branch is master. The previous
+production deployment must remain serving until domain cutover is approved.
+www.marlev.com is not attached to this Pages project; verify its hosting separately.
 
-Publishing merges the PR using authenticated `gh`; Cloudflare performs deployment.
-The editor's machine does not need a Cloudflare deployment token for this flow.
-Without branch protection, the instruction to wait for “publish” is a behavioral
-rule, not an enforced access boundary.
+The isolated Worker has no production domains:
+https://marlev-site-preview.vlad-sadovsky.workers.dev/.
 
-## Known limitations
+```sh
+npx wrangler login
+npm run deploy:test
+```
 
-- `contact.html` contains Formspree `YOUR_FORM_ID`. The form is not operational;
-  the displayed email and phone links remain available. The owner must supply
-  a real endpoint before form delivery can be configured and tested.
-- Remote branch previews, production domain, and Cloudflare status access must
-  be confirmed in the dashboard. The expected public domain is www.marlev.com.
-- Three article cards link to absent sections (`#vitamins`, `#flu`, `#fever`).
-  Their missing content needs an editorial decision; it has not been invented.
-- External links, embedded maps, and third-party services are not checked offline.
-- The empty legacy `CNAME` file is not evidence of the current hosting setup.
+This builds/checks then deploys only `marlev-site-preview`, configured by
+wrangler.site.jsonc. `npm run preview:branch` builds and invokes Wrangler’s branch
+preview command; it needs Cloudflare access. Retrieve actual URLs from command/build
+output. Never guess a preview URL. Local preview needs no Cloudflare login.
 
-## Maintainer notes
+Worker Git builds are connected to countinglight/marlev: master deployments and
+automatic branch previews, using the explicit wrangler.site.jsonc configuration.
+Before merging the migration, verify the branch build and disable Pages automatic
+production deployments so its former
+root-output configuration cannot publish the reorganized repository. No domain
+transfer occurs merely by configuring this Worker; use its workers.dev URL for
+verification. Branch protection remains deferred. See migration/README.md for
+current verification and cutover steps.
 
-Keep `AGENTS.md` current when commands or deployment procedures change. Keep
-reusable automation in scripts. A custom skill can be added later if a longer
-repeatable workflow develops; none is required for routine text/layout editing.
+## Import history and limitations
+
+The external edited folder was left untouched. Content import and source moves
+are separate commits. migration/content-import.json records input/import hashes,
+referenced assets, and normalization from CRLF to LF. Old baseline metadata remains
+for history. `npm run verify:import` checks that imported bytes survived this move;
+it is not a required check for later intentional content edits.
+
+Four existing structural warnings remain: Formspree YOUR_FORM_ID and three absent
+article fragments (#vitamins, #flu, #fever). The supplied Online Payments password
+dialog runs only in the browser; page source/fee content remains public and it
+is not secure access control. Real access control would need a separate request.
+Payment/contact submissions and external service availability are not tested by
+the build; do not submit real transactions or test messages during visual checks.

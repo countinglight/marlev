@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Test Worker only. No production domains or routes during migration review.
+  "name": "marlev-site-preview",
+  "compatibility_date": "2026-11-27",
+  "workers_dev": true,
+  "previews": {},
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "none"
+  }
+}

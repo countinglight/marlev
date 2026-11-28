@@ -1,0 +1,88 @@
+{
+  "base_commit": "7b3b680f96ef27cb39219a50d0111fa7f3b059ee",
+  "source": "marlev.lerapc (left untouched; Git HEAD matches saved baseline)",
+  "normalization": "CRLF/CR normalized to LF; no editorial content rewritten",
+  "files": [
+    {
+      "path": "about-homeopathy.html",
+      "incoming_sha256": "2428acc53a4b3261ea7f40d9cb6916a5f4413a09571887db9dfcfa9a99caa016",
+      "imported_sha256": "73cf6e81d1c39ffe235831ec8e3d904bcc838cf4c2e675869a67b5329b6bbd27"
+    },
+    {
+      "path": "acute-conditions.html",
+      "incoming_sha256": "40c85ba8687200edb9ef72307d755f8d043c7a765122b917401404fb16783ca3",
+      "imported_sha256": "4bd206fa3d08747ad64e436623f7a204fcad522d362c3c0cbaa91888e61e9e14"
+    },
+    {
+      "path": "articles.html",
+      "incoming_sha256": "8343033db17787019f1e334cd82918a4ffe1590e33f6855f98183c5c0a4b694b",
+      "imported_sha256": "4ad91fc131d5b78e621f00c59f87bf5467d251671f22f833b293dbe8f9f381cc"
+    },
+    {
+      "path": "contact.html",
+      "incoming_sha256": "f043c0fb510de9046856a9484e5d0d080851ff621ad987c25b3bac2ae1476db3",
+      "imported_sha256": "4d6c17c097cd2b438b58279637b85c8260b6dbbf2d4529343ee25ad35442577e"
+    },
+    {
+      "path": "directions.html",
+      "incoming_sha256": "31fa073c14ebd98a6d52185dadb6c1bc8626a80dda89ce3c9e489241fa05169d",
+      "imported_sha256": "a3b52a0b55ac17d41dc74f502705bc4975026b0fe1f5c246dc15db9a008e48e2"
+    },
+    {
+      "path": "index.html",
+      "incoming_sha256": "b75fc16ee215db9cf6d97648b04caf0dc72ff62d10dedfbe4e2b06c005f47d5f",
+      "imported_sha256": "e6c88066fdac3c12372db62a81deb1f8c7cd71991343db7a0c81c9e87fb9a2a5"
+    },
+    {
+      "path": "online-payments.html",
+      "incoming_sha256": "efe35967d74681875162711f6e7bfe2d0d9c50086d6e6fac3287c23a860eacd3",
+      "imported_sha256": "efe35967d74681875162711f6e7bfe2d0d9c50086d6e6fac3287c23a860eacd3"
+    },
+    {
+      "path": "russian.html",
+      "incoming_sha256": "3a68646ae1433307c238668dbd2219d15c26d710c995b47f3ecc783068db6ac4",
+      "imported_sha256": "0c3036983c4aa9e8c6fc5e148c21a2a57ef1a0b640a3b15bc16286c79c3645f5"
+    },
+    {
+      "path": "styles.css",
+      "incoming_sha256": "e9a3853fcb93cbb0087fe54fa35978587e9895eddfeb56189c5c782792226f21",
+      "imported_sha256": "1fd36caef945b21cf5b3341e14a08b1e4414c65d6aa739d4fb60474b025d2ae1"
+    }
+  ],
+  "referenced_assets": [
+    {
+      "path": "audio/melting-away-the-stress.mp3",
+      "sha256": "617a22d4b2f4530db3aa67bb361d853ae396e030c789a39375294dc31f88b2c9"
+    },
+    {
+      "path": "images/acute-rest-moderate-steam.png",
+      "sha256": "023b63de3a49b6ce8244c9c6963427f8a4c99bd9fe964d926a5dfca9a58f3436"
+    },
+    {
+      "path": "images/homeopathy-history.png",
+      "sha256": "e23a5ef3621179b173109879dadfa46ec6c15897f7700ca43191337ab44ec86d"
+    },
+    {
+      "path": "images/mortar-pestle-banner.jpg",
+      "sha256": "e25e7ce6914dfa0fbbead34395a073eb95705593eb8e69fc9699f86049b77280"
+    },
+    {
+      "path": "images/resources-reading-nook.png",
+      "sha256": "a9abb138cbb8132f09b5a34b3af286f53e55ddf570af8a2a392c52fbdbb0cbfa"
+    },
+    {
+      "path": "images/thinkspace-entrance.jpg",
+      "sha256": "de81d1c4ac23afbda2dee4fc9b7724b40a25a27835564aa11791a9e53bb91f30"
+    },
+    {
+      "path": "images/thinkspace-redmond.jpg",
+      "sha256": "9e3d6bdb158514516046e2a5d6ac106c85c3504412fb5866ee9c20cb1d20336e"
+    },
+    {
+      "path": "images/valerie-library-updated.png",
+      "sha256": "249658c08ab766acfc1cbbee7f1ab19ba9771abc78cc9654ee6ee143289cf1ab"
+    }
+  ],
+  "address": "8201 164th Ave NE, Suite 200, Redmond, WA 98052",
+  "excluded": "Incoming tooling/Git metadata, root reference photos, and unused image variants were not imported."
+}
