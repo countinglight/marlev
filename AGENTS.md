@@ -44,8 +44,10 @@ whether it is possible and any material missing information or permission.
 - Existing production hosting is Cloudflare Pages. GitHub default and verified
   Pages production/source branches are both `master`. Workers is the target
   platform for this migration and future client apps; Pages is temporary here.
-- Pages previews are confirmed: retrieve exact URLs from the Cloudflare check-run
-  output.summary for the commit. Never guess a preview URL.
+- Use Worker branch previews for this reorganized layout. Retrieve the exact URL
+  from the successful Workers build log and verify its content. Old Pages preview
+  checks can pass with the obsolete root-output configuration; do not rely on them.
+  Never guess a preview URL.
 - `wrangler.site.jsonc` targets only the new `marlev-site-preview` test Worker,
   serving generated `dist/`, with no production custom domains. `npm run deploy:test`
   requires Cloudflare login and is authorized only for that test target.

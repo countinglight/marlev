@@ -46,8 +46,9 @@ Workers is the agreed target for all project surfaces. Before merging PR #3:
 2. Worker Git-connected builds are now configured for master and branch previews:
    build command npm run build; deploy npx wrangler deploy -c wrangler.site.jsonc;
    preview npx wrangler preview -c wrangler.site.jsonc; root /; Node 22.20.0.
-3. Trigger a real branch build and inspect its resulting hosted content. A manual
-   wrangler deploy validates packaging/hosting, not the automatic Git pipeline.
+3. Automatic branch build verified successfully for 8602e98. All eight pages and
+   CSS match source at https://vlads-dev-marlev-site-preview.vlad-sadovsky.workers.dev/.
+   Private repository paths return 404; see verification.md for build identifiers.
 4. Disable Pages automatic production deployments before merging this source move.
    Keep its current production deployment online; its old root-output build is no
    longer suitable for the reorganized repository. Save Pages settings for rollback.

@@ -18,7 +18,12 @@ referenced assets match their recorded hashes in both site/ and dist/.
 - No payment or contact submission was made. Payment gate remains client-side only.
 - Worker Git configuration saved through Chrome: countinglight/marlev, master;
   npm run build; explicit wrangler.site.jsonc deploy/preview commands; previews on.
-  This documentation push is the first automatic branch-build verification.
+- Automatic Worker build f21c32fe-e730-426d-8245-0ac601bb7b50 passed for
+  commit 8602e98 after adding the required empty previews configuration block.
+- Automatic branch URL: https://vlads-dev-marlev-site-preview.vlad-sadovsky.workers.dev/
+- Immutable deployment URL: https://6dda37c8-marlev-site-preview.vlad-sadovsky.workers.dev/
+- All eight HTML pages and CSS on the automatic branch preview match site/ exactly;
+  six missing/private paths return 404. GitHub source/build checks passed.
 - No production merge, Pages deployment change, or domain transfer was performed.
 
 The original working checkout was switched to master by another process during
