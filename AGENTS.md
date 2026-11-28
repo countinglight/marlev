@@ -38,22 +38,18 @@ whether it is possible and any material missing information or permission.
 - Local preview: `npm run preview:site` (127.0.0.1:8787, watches site/ recursively).
 - `./serve.sh` remains a legacy Python fallback; prefer Wrangler.
 - Repository: https://github.com/countinglight/marlev
-- Verified Pages domain: https://marlev.countinglight.com/ (also marlev.pages.dev).
-- www.marlev.com is a historical address, not attached to this Pages project;
-  do not change its DNS or assume it is the production deployment target.
-- Existing production hosting is Cloudflare Pages. GitHub default and verified
-  Pages production/source branches are both `master`. Workers is the target
-  platform for this migration and future client apps; Pages is temporary here.
-- Use Worker branch previews for this reorganized layout. Retrieve the exact URL
-  from the successful Workers build log and verify its content. Old Pages preview
-  checks can pass with the obsolete root-output configuration; do not rely on them.
-  Never guess a preview URL.
-- `wrangler.site.jsonc` targets only the new `marlev-site-preview` test Worker,
-  serving generated `dist/`, with no production custom domains. `npm run deploy:test`
-  requires Cloudflare login and is authorized only for that test target.
-- Hosted test: https://marlev-site-preview.vlad-sadovsky.workers.dev/
-  (verified deployment; Git builds connected to countinglight/marlev, master,
-  with automatic branch previews).
+- Current public website: https://marlev.countinglight.com/, served by Cloudflare Workers.
+- Worker internal name: marlev-site-preview. Despite its historical name, it now
+  serves the current public domain. workers.dev is only an auxiliary URL.
+- GitHub default/deployment branch: master. Merges trigger Worker builds and publish
+  to marlev.countinglight.com using wrangler.site.jsonc (including its custom domain).
+- Use Worker branch previews for editing review. Retrieve exact URLs from successful
+  build logs and verify contents. Do not rely on old Pages preview checks.
+- Pages automatic production deployments are disabled. Its retained deployment at
+  marlev.pages.dev is rollback material, not the current public website.
+- Moving to marlev.com / www.marlev.com is deferred and requires a separate request.
+- `npm run deploy:site` directly deploys the public Worker and needs an explicit
+  publish request. Prefer normal PR-to-master deployment. Local preview is safe.
 
 ## Repository structure and migration status
 The external marlev.lerapc content has been imported and public source moved into
@@ -63,12 +59,10 @@ or committed. The old baseline and migration/content-import.json preserve proven
 Future intentional content edits may differ; use npm run build for normal checks.
 Future browser apps belong under apps/<name>/ with separate dependencies and
 builds; publish only their explicit output. See apps/README.md.
-Continue migration work on vlads-dev until reviewed. Do not merge or transfer any
-production domain without a new explicit publishing/cutover request. Production
-continues on the existing Pages deployment. Before merging this reorganization,
-verify the Worker Git pipeline and disable Pages automatic production deployment
-so the source-folder move cannot replace the old live site with a broken root build.
-No production domains are declared in the test Worker configuration.
+The migration is published on master and marlev.countinglight.com. Continue normal
+editing on task branches. An explicit publish request authorizes merging into master
+and verifying the updated current public website. Do not defer this hostname update
+as a future domain transfer; only migration to marlev.com is deferred.
 
 ## Editing and verification
 Keep changes focused. Preserve unrelated work. Keep repeated headers, navigation,

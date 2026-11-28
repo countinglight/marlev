@@ -1,9 +1,10 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // Test Worker only. No production domains or routes during migration review.
+  // Current public website. Migration to marlev.com remains a separate future step.
   "name": "marlev-site-preview",
   "compatibility_date": "2026-11-27",
   "workers_dev": true,
+  "routes": [{ "pattern": "marlev.countinglight.com", "custom_domain": true }],
   "previews": {},
   "assets": {
     "directory": "./dist",

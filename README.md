@@ -57,32 +57,20 @@ The imported copy’s current office is 8201 164th Ave NE, Suite 200, Redmond, W
 
 ## Hosting during migration
 
-Existing production is Cloudflare Pages at https://marlev.countinglight.com/ and
-https://marlev.pages.dev/. Its production/source branch is master. The previous
-production deployment must remain serving until domain cutover is approved.
-www.marlev.com is not attached to this Pages project; verify its hosting separately.
+The current public website is https://marlev.countinglight.com/, served by Worker
+`marlev-site-preview` (historical internal name). Merging into master triggers its
+Cloudflare Git build and updates that hostname. wrangler.site.jsonc declares the
+custom domain so future deployments preserve it. The workers.dev address is auxiliary.
 
-The isolated Worker has no production domains:
-https://marlev-site-preview.vlad-sadovsky.workers.dev/.
+Use `npm run preview:branch` for a remote branch preview and retrieve its actual
+URL from successful build output. Use `npm run preview:site` locally. Direct
+`npm run deploy:site` publishes the public Worker and requires publication approval;
+normal publishing uses a reviewed PR merged into master.
 
-```sh
-npx wrangler login
-npm run deploy:test
-```
-
-This builds/checks then deploys only `marlev-site-preview`, configured by
-wrangler.site.jsonc. `npm run preview:branch` builds and invokes Wrangler’s branch
-preview command; it needs Cloudflare access. Retrieve actual URLs from command/build
-output. Never guess a preview URL. Local preview needs no Cloudflare login.
-
-Worker Git builds are connected to countinglight/marlev: master deployments and
-automatic branch previews, using the explicit wrangler.site.jsonc configuration.
-Before merging the migration, verify the branch build and disable Pages automatic
-production deployments so its former
-root-output configuration cannot publish the reorganized repository. No domain
-transfer occurs merely by configuring this Worker; use its workers.dev URL for
-verification. Branch protection remains deferred. See migration/README.md for
-current verification and cutover steps.
+Pages automatic production deployments are disabled. Its old deployment remains
+at marlev.pages.dev for rollback; the current domain is detached from Pages.
+Moving to marlev.com / www.marlev.com is deferred to a separate future request.
+Branch protection remains deferred.
 
 ## Import history and limitations
 

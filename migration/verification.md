@@ -29,3 +29,12 @@ referenced assets match their recorded hashes in both site/ and dist/.
 The original working checkout was switched to master by another process during
 this task. Only this task's incomplete moves were reversed there, and work continued
 in an isolated managed checkout on vlads-dev. No source edit folder was overwritten.
+
+## Current-domain correction
+
+The owner clarified that only moving to marlev.com was deferred. The existing
+marlev.countinglight.com hostname was moved from Pages to Worker marlev-site-preview.
+Wrangler version 1bb42385-f4ae-4da7-bb59-b1a654c6192f successfully attached the domain.
+All eight HTML pages and CSS matched site/ over verified HTTPS at that hostname;
+package.json, AGENTS.md, and site/index.html returned 404. Old Pages deployment
+retained, automatic Pages production deployment disabled; marlev.com untouched.
