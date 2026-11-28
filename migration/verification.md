@@ -16,8 +16,9 @@ referenced assets match their recorded hashes in both site/ and dist/.
 - Audio serves the full valid 14,426,487-byte MP3. Range requests return HTTP 200
   with the full file rather than HTTP 206; partial-content seeking is not verified.
 - No payment or contact submission was made. Payment gate remains client-side only.
-- Automatic Git/Worker builds remain pending the missing Builds API permission or
-  dashboard login. Do not equate successful manual deployment with a tested pipeline.
+- Worker Git configuration saved through Chrome: countinglight/marlev, master;
+  npm run build; explicit wrangler.site.jsonc deploy/preview commands; previews on.
+  This documentation push is the first automatic branch-build verification.
 - No production merge, Pages deployment change, or domain transfer was performed.
 
 The original working checkout was switched to master by another process during

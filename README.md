@@ -75,8 +75,10 @@ wrangler.site.jsonc. `npm run preview:branch` builds and invokes Wrangler’s br
 preview command; it needs Cloudflare access. Retrieve actual URLs from command/build
 output. Never guess a preview URL. Local preview needs no Cloudflare login.
 
-Before merging the migration, configure the Worker’s Git builds for master plus
-branch previews, and disable Pages automatic production deployments so its former
+Worker Git builds are connected to countinglight/marlev: master deployments and
+automatic branch previews, using the explicit wrangler.site.jsonc configuration.
+Before merging the migration, verify the branch build and disable Pages automatic
+production deployments so its former
 root-output configuration cannot publish the reorganized repository. No domain
 transfer occurs merely by configuring this Worker; use its workers.dev URL for
 verification. Branch protection remains deferred. See migration/README.md for

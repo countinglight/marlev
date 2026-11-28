@@ -50,7 +50,8 @@ whether it is possible and any material missing information or permission.
   serving generated `dist/`, with no production custom domains. `npm run deploy:test`
   requires Cloudflare login and is authorized only for that test target.
 - Hosted test: https://marlev-site-preview.vlad-sadovsky.workers.dev/
-  (verified deployment; not connected to Git builds yet).
+  (verified deployment; Git builds connected to countinglight/marlev, master,
+  with automatic branch previews).
 
 ## Repository structure and migration status
 The external marlev.lerapc content has been imported and public source moved into
@@ -63,7 +64,7 @@ builds; publish only their explicit output. See apps/README.md.
 Continue migration work on vlads-dev until reviewed. Do not merge or transfer any
 production domain without a new explicit publishing/cutover request. Production
 continues on the existing Pages deployment. Before merging this reorganization,
-configure the Worker Git pipeline and disable Pages automatic production deployment
+verify the Worker Git pipeline and disable Pages automatic production deployment
 so the source-folder move cannot replace the old live site with a broken root build.
 No production domains are declared in the test Worker configuration.
 

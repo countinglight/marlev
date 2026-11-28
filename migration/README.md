@@ -43,7 +43,7 @@ Workers is the agreed target for all project surfaces. Before merging PR #3:
 
 1. Verify imported desktop/mobile pages, local links, audio, payment dialog display,
    form targets, .html/clean URLs, 404 handling, and private-file exclusion.
-2. Configure Worker Git-connected builds for master and non-production previews:
+2. Worker Git-connected builds are now configured for master and branch previews:
    build command npm run build; deploy npx wrangler deploy -c wrangler.site.jsonc;
    preview npx wrangler preview -c wrangler.site.jsonc; root /; Node 22.20.0.
 3. Trigger a real branch build and inspect its resulting hosted content. A manual
@@ -55,10 +55,11 @@ Workers is the agreed target for all project surfaces. Before merging PR #3:
 6. Transfer production domains only as the final separately approved step. Verify
    TLS, redirects, root/www behavior, maps, contact/payments, and rollback then.
 
-The current Wrangler OAuth session deploys Workers but the Workers Builds API
-returns 403. Configuring the Git connection requires dashboard access or a user-owned
-API token with Workers Builds Configuration: Edit (and Workers Scripts: Read).
-Do not copy OAuth credentials into GitHub secrets or commit them to the repository.
+The Worker Git connection was completed in Chrome using the existing Cloudflare
+GitHub app and existing build token. No new token or expanded token permissions
+were created. The checked-in .nvmrc supplies Node 22.20.0. The Wrangler OAuth
+session itself still does not grant the Builds API configuration scope; dashboard
+access was used for configuration. No credentials were copied into the repository.
 Production branch protection is deferred; no separate deploy branch is introduced.
 
 ## Known content limitations
