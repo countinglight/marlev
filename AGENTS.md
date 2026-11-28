@@ -39,13 +39,16 @@ whether it is possible and any material missing information or permission.
 - `./serve.sh` remains a legacy Python fallback; prefer Wrangler.
 - Repository: https://github.com/countinglight/marlev
 - Production: https://www.marlev.com/ (confirm the configured domaster before publishing).
-- Existing production hosting is Cloudflare Pages. GitHub default is now `master`;
-  Pages production-branch alignment must be verified in Cloudflare before publishing.
+- Existing production hosting is Cloudflare Pages. GitHub default and verified
+  Pages production/source branches are both `master`. Workers is the target
+  platform for this migration and future client apps; Pages is temporary here.
 - Pages previews are confirmed: retrieve exact URLs from the Cloudflare check-run
   output.summary for the commit. Never guess a preview URL.
 - `wrangler.site.jsonc` targets only the new `marlev-site-preview` test Worker,
   serving generated `dist/`, with no production custom domains. `npm run deploy:test`
   requires Cloudflare login and is authorized only for that test target.
+- Hosted test: https://marlev-site-preview.vlad-sadovsky.workers.dev/
+  (verified deployment; not connected to Git builds yet).
 
 ## Temporary migration hold
 The owner approved Node/Wrangler preparation on `vlads-dev`, based on `master`.

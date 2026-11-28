@@ -7,9 +7,11 @@ GitHub default branch: `master` (renamed from `main`). Preparation branch:
 Production remains on Cloudflare Pages. No production domain transfer is authorized
 in this stage. Branch protection is still deferred.
 
-Cloudflare access is required to verify/change the Pages production branch to
-`master` and deploy `marlev-site-preview`. Do not assume GitHub's rename updates
-Cloudflare's setting. Existing deployed files remain available during this check.
+Cloudflare access has been authenticated. Pages production_branch and its Git
+source production_branch were explicitly changed from main to master and read
+back through the API. Existing domains were retained: marlev.pages.dev and
+marlev.countinglight.com. www.marlev.com is not attached to this Pages project;
+do not transfer that hostname without separately checking its current hosting.
 The checked-in CI push trigger and agent instructions now use master; they reach
 master only when the preparation PR is eventually merged.
 
@@ -93,4 +95,12 @@ one-time clone updates, not commands to run on an arbitrary editing branch.
   disposable copies using the actual Node binary (not the Volta launcher shim).
 - Test Worker deploy --dry-run: passed, 16 public files packaged.
 - Four existing content warnings remain as documented in the main README.
-- Cloudflare hosted deployment and production branch setting: awaiting login.
+- Pages production and source branches: master, verified via authenticated API.
+- Hosted test Worker created: marlev-site-preview.
+  URL: https://marlev-site-preview.vlad-sadovsky.workers.dev/
+  Version: b58b86db-4d20-466c-befc-8132d42743a1.
+- Hosted pages, exact CSS/banner bytes, and private/unknown-file 404s: passed.
+- The test Worker has no production custom domains and is manually deployed;
+  Git-connected builds remain a later step before production cutover.
+- Workers is the agreed long-term target for all project surfaces. Cloudflare
+  recommends Workers for new projects; keeping Pages now is only transitional.

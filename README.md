@@ -3,9 +3,11 @@
 Static HTML/CSS website for Athena Holistic Health. Source repository:
 https://github.com/countinglight/marlev.
 
-Cloudflare Pages currently hosts the production site. GitHub’s default branch
-has been renamed to `master`; confirm Pages’ production branch is also `master`
-before the next publication.
+Cloudflare Pages currently hosts the production site at
+https://marlev.countinglight.com/ (also https://marlev.pages.dev/). GitHub’s default
+branch and the verified Pages production branch are both `master`. Workers is
+the agreed target for this website and future browser apps; Pages stays in place
+only until the external content import and planned cutover.
 There is no build step or dependency installation for the site itself. This
 repository does not contain the Cloudflare dashboard configuration; keep the
 existing deployment settings. Branch protection is intentionally deferred.
@@ -70,8 +72,9 @@ npm run deploy:test
 
 `wrangler.site.jsonc` names `marlev-site-preview`, publishes only `dist/`, and
 contains no production routes/domains. This command does not migrate production.
-Actual deployment needs authenticated account access; the files alone do not
-create a Cloudflare Worker. Continue normal publication through GitHub and Pages
+The test Worker has been created and verified at
+https://marlev-site-preview.vlad-sadovsky.workers.dev/. It is deployed manually
+from the branch; Git-connected Worker builds are a later configuration step. Continue normal publication through GitHub and Pages
 until the migration is reviewed and cut over.
 
 ## Site files
@@ -119,8 +122,9 @@ rule, not an enforced access boundary.
 - `contact.html` contains Formspree `YOUR_FORM_ID`. The form is not operational;
   the displayed email and phone links remain available. The owner must supply
   a real endpoint before form delivery can be configured and tested.
-- Pages previews are confirmed. The production-branch rename must be checked
-  in the dashboard; the live domain is www.marlev.com.
+- Pages previews and production branch `master` are confirmed. Its configured
+  domain is marlev.countinglight.com; www.marlev.com is not attached to this
+  Pages project, so its DNS/hosting must be reviewed separately before any cutover.
 - Three article cards link to absent sections (`#vitamins`, `#flu`, `#fever`).
   Their missing content needs an editorial decision; it has not been invented.
 - External links, embedded maps, and third-party services are not checked offline.
