@@ -10,13 +10,15 @@
   "packageManager": "npm@10.9.8",
   "scripts": {
     "check": "python3 scripts/check_site.py",
-    "check:baseline": "node scripts/check-baseline.mjs",
-    "build": "npm run check && node scripts/build-site.mjs",
+    "build": "npm run check && node scripts/build-site.mjs && npm run check:dist",
     "build:site": "npm run build",
     "dev": "node scripts/preview-site.mjs",
     "preview:site": "node scripts/preview-site.mjs",
     "preview:built": "wrangler dev --config wrangler.site.jsonc --ip 127.0.0.1 --port 8787",
-    "deploy:test": "npm run build && wrangler deploy --config wrangler.site.jsonc"
+    "deploy:test": "npm run build && wrangler deploy --config wrangler.site.jsonc",
+    "check:dist": "python3 scripts/check_site.py --root dist",
+    "verify:import": "node scripts/verify-import.mjs",
+    "preview:branch": "npm run build && wrangler preview --config wrangler.site.jsonc"
   },
   "devDependencies": {
     "wrangler": "4.169.0"

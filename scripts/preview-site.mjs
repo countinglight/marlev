@@ -1,7 +1,7 @@
 import { watch } from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { buildSite, isRootAsset, root } from './build-site.mjs';
+import { buildSite, site, root } from './build-site.mjs';
 
 const args = process.argv.slice(2);
 if (args.length && (args.length !== 2 || args[0] !== '--port' ||
@@ -21,10 +21,7 @@ function rebuild() {
     pending = pending.then(buildSite).catch((error) => console.error('Rebuild failed:', error.message));
   }, 150);
 }
-const watchers = [
-  watch(root, (_, name) => { if (name && isRootAsset(String(name))) rebuild(); }),
-  watch(path.join(root, 'images'), { recursive: true }, rebuild),
-];
+const watcher = watch(site, { recursive: true }, rebuild);
 let stopping = false;
 function stop(signal = 'SIGINT', exitCode = 0) {
   if (stopping) return;

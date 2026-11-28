@@ -30,12 +30,12 @@ publication authorization. When asked about an operation outside this menu, expl
 whether it is possible and any material missing information or permission.
 
 ## Site map and commands
-- Seven root HTML pages, shared `styles.css`, assets in `images/`.
-- `index.html` is the English home page; `russian.html` is the Russian home page.
+- Eight HTML pages in `site/`, shared `site/styles.css`, images and audio in site/.
+- `site/index.html` is the English home page; `site/russian.html` is the Russian home page.
 - Static HTML/CSS; Node 22/npm 10 run tooling. No frontend framework required.
-- Check/build: `npm run build`, `npm run check:baseline`, and `git diff --check`.
+- Check/build: `npm run build` and `git diff --check`.
 - Install: `npm ci`. Wrangler is pinned in package-lock.json.
-- Local preview: `npm run preview:site` (127.0.0.1:8787, watches HTML/CSS/images).
+- Local preview: `npm run preview:site` (127.0.0.1:8787, watches site/ recursively).
 - `./serve.sh` remains a legacy Python fallback; prefer Wrangler.
 - Repository: https://github.com/countinglight/marlev
 - Verified Pages domain: https://marlev.countinglight.com/ (also marlev.pages.dev).
@@ -52,17 +52,20 @@ whether it is possible and any material missing information or permission.
 - Hosted test: https://marlev-site-preview.vlad-sadovsky.workers.dev/
   (verified deployment; not connected to Git builds yet).
 
-## Temporary migration hold
-The owner approved Node/Wrangler preparation on `vlads-dev`, based on `master`.
-A parallel HTML/CSS edit outside Git is expected in a few days. Until it arrives:
-- Do not edit, rename, or move HTML/CSS, or change public paths without new direction.
-- Preserve migration/content-baseline.json and its base commit for comparison.
-- The build copies public files into ignored dist/; never serve the repo root in Wrangler.
-- Do not merge migration work into master, move production domains, or replace Pages.
-After receiving the external folder, compare/import its HTML/CSS at their current
-paths, review against the baseline, then perform the site/ move as a separate commit.
-Follow migration/README.md. Future browser apps belong under apps/<name>/ with
-separate dependencies/builds; publish only their generated output, never source.
+## Repository structure and migration status
+The external marlev.lerapc content has been imported and public source moved into
+site/. Keep editable website files there; dist/ is generated and must not be edited
+or committed. The old baseline and migration/content-import.json preserve provenance.
+`npm run verify:import` is a historical migration check, not a content-editing gate.
+Future intentional content edits may differ; use npm run build for normal checks.
+Future browser apps belong under apps/<name>/ with separate dependencies and
+builds; publish only their explicit output. See apps/README.md.
+Continue migration work on vlads-dev until reviewed. Do not merge or transfer any
+production domain without a new explicit publishing/cutover request. Production
+continues on the existing Pages deployment. Before merging this reorganization,
+configure the Worker Git pipeline and disable Pages automatic production deployment
+so the source-folder move cannot replace the old live site with a broken root build.
+No production domains are declared in the test Worker configuration.
 
 ## Editing and verification
 Keep changes focused. Preserve unrelated work. Keep repeated headers, navigation,
@@ -72,7 +75,7 @@ For shared facts such as contact details, update English and Russian occurrences
 for substantive translated prose, confirm intended translation scope when unclear.
 Use existing CSS patterns, semantic markup, useful image alt text, and responsive
 images. Avoid introducing dependencies or frameworks for routine editing.
-Run both checks above. For visual changes, inspect affected pages at desktop and
+Run the build/check command above. For visual changes, inspect affected pages at desktop and
 mobile widths in an available browser, including navigation, links, and overflow.
 If browser access is unavailable, say visual inspection remains unverified.
 The checker is a structural smoke check, not a full HTML validator or browser test.
@@ -112,6 +115,8 @@ Branch protection is intentionally deferred; do not configure it without request
 Ask before changing deployment, domains, credentials, dependencies, or architecture.
 Do not assume repository instructions grant tool permissions or authentication.
 The contact form still uses Formspree `YOUR_FORM_ID`; it is not operational.
+The supplied Online Payments password dialog is client-side only; do not describe
+it as secure authentication. Do not submit payment/contact forms during testing.
 Three article links (`#vitamins`, `#flu`, `#fever`) also lack destination content
 and are explicitly reported as known warnings. New broken references fail checks.
 Warn when relevant; do not invent an endpoint, submit test messages, or silently

@@ -1,106 +1,69 @@
-# Staged Node/Wrangler migration
+# Website migration status
 
-## Status and scope
+## Completed content reconciliation
 
-GitHub default branch: `master` (renamed from `main`). Preparation branch:
-`vlads-dev`, originally based on `7b3b680f96ef27cb39219a50d0111fa7f3b059ee`.
-Production remains on Cloudflare Pages. No production domain transfer is authorized
-in this stage. Branch protection is still deferred.
+The prepared repository is /Users/vlads/ws/git/countinglight/marlev. The separately
+supplied /Users/vlads/ws/git/marlev is an older non-Git folder and was not changed.
+Input: marlev.lerapc, whose HEAD matches the original baseline 7b3b680. All its
+HTML/CSS working-tree changes were imported, normalizing CRLF to LF. Root input
+photos, unused image variants, old tooling, and Git metadata were not imported.
+The input folder was left untouched.
 
-Cloudflare access has been authenticated. Pages production_branch and its Git
-source production_branch were explicitly changed from main to master and read
-back through the API. Existing domains were retained: marlev.pages.dev and
-marlev.countinglight.com. www.marlev.com is not attached to this Pages project;
-do not transfer that hostname without separately checking its current hosting.
-The checked-in CI push trigger and agent instructions now use master; they reach
-master only when the preparation PR is eventually merged.
+Commit 64b5d86 imports eight pages, CSS, and referenced images/audio. The Online
+Payments page and the new office address (8201 164th Ave NE, Suite 200) are intentional
+incoming changes. content-import.json records hashes. The subsequent reorganization
+moves public source into site/, retaining the same URLs and contents. No framework
+conversion or medical/payment copy rewrite is part of the migration.
 
-## Preserve external content edits
+The original content-baseline.json is historical. The temporary freeze has ended.
+Normal CI checks source and generated output; it no longer freezes content hashes.
+`npm run verify:import` is a one-time preservation check for the import/move.
 
-The seven root HTML pages and styles.css are frozen byte-for-byte against
-`content-baseline.json`. The base commit preserves the original contents;
-the manifest contains SHA-256 hashes. Assets also remain in their original paths.
-No framework conversion, source moves, or template rewriting occurs in this stage.
+## Structure
 
-When the other computer's editing is finished:
-
-1. Obtain its complete HTML/CSS folder, plus any newly referenced assets. Ask which
-   original version it started from; our baseline is the current published address
-   update, so an older external copy may otherwise restore the former address.
-2. Retain that folder unchanged outside the repository as the incoming copy.
-3. Compare each incoming file with both the baseline commit and the current source.
-   If the incoming work started before the baseline, use its true starting version
-   for three-way reconciliation. Never overwrite the new address/help changes blindly.
-4. Import reviewed HTML/CSS into their current root paths. Preserve unrelated files.
-   Track new pages and stylesheet/image references; missing files are not implicit
-   deletions. Do not copy Git metadata, credentials, package files, or tooling.
-5. Run npm run build and browser checks, then commit content changes separately.
-   Intentionally update the baseline hashes only after review, or remove the
-   temporary baseline CI gate once the content hold ends. Do not hide a failure
-   by automatically regenerating the manifest.
-6. In a separate commit move public source into site/, adapt the build/checker,
-   and prove public URLs and copied bytes are unchanged.
-
-## Prepared architecture
-
-Current (no source moves):
-
-- Root HTML/CSS and images/: existing editable site.
-- scripts/: build, validation, source watcher, and migration checks.
+- site/: editable website HTML/CSS, images, audio, and future static assets.
+- apps/: separate future client-app source/toolchains; see apps/README.md.
+- scripts/: website build, watcher, and structural checker.
 - dist/: generated public-only output, ignored by Git.
-- wrangler.site.jsonc: isolated test Worker, no production domains.
+- wrangler.site.jsonc: marlev-site-preview Worker; no custom domains/routes.
 
-Target after importing external edits:
+The builder recursively copies permitted public file types, excludes dotfiles and
+Markdown/development files, refuses symlinks, and removes stale output. It does not
+publish apps/ automatically; add explicit output composition with the first app.
+Relative URLs stay unchanged because site/ contents are published at the URL root.
 
-- site/: hand-authored website and its assets.
-- apps/<name>/: each client app's source and separate package/lockfile/toolchain.
-- dist/: assembled public output from the site and explicitly selected app builds.
+## Hosting and final cutover
 
-Small self-contained browser apps may publish under /apps/<name>/; configure each
-build's base path and routing accordingly. Apps that require root routing, distinct
-headers, backend services, or isolation should get their own Worker/subdomain and
-Wrangler config, as Luciddream separates site and applications. Do not add Expo,
-mobile dependencies, or a shared mandatory app build to the website. Copy only
-generated app artifacts into dist/, never package files, node_modules, or source.
-No sample app is created until there is an actual app requirement.
+Existing Pages project: marlev. Production/source branches: master. Existing domains:
+marlev.countinglight.com and marlev.pages.dev. www.marlev.com is not attached to it;
+its existing hosting/DNS needs separate confirmation. No domains have been moved.
+Test Worker: https://marlev-site-preview.vlad-sadovsky.workers.dev/.
 
-## Testing and cutover checklist
+Workers is the agreed target for all project surfaces. Before merging PR #3:
 
-- npm ci; npm run build; npm run check:baseline.
-- npm run preview:site; verify all seven pages, images, CSS, clean and .html URLs,
-  missing-page 404, and absence of repository/private files at public URLs.
-- Verify source changes rebuild and reload; exercise watcher using a temporary
-  fixture, not the frozen source.
-- Once logged in: wrangler whoami; npm run deploy:test; record actual Worker URL.
-- Verify the hosted test Worker, then configure Git/branch previews for the eventual
-  production Worker using current Cloudflare documentation (Luciddream's older
-  versions-upload preview instructions are not copied automatically).
-- After external import, test root and www domains, redirects, TLS, maps, and forms.
-- Transfer domains only at the later approved cutover. Keep the Pages project and
-  record its settings for rollback; ensure only the selected pipeline publishes.
-- Production publishing remains merge-to-master; no separate deploy branch is added.
+1. Verify imported desktop/mobile pages, local links, audio, payment dialog display,
+   form targets, .html/clean URLs, 404 handling, and private-file exclusion.
+2. Configure Worker Git-connected builds for master and non-production previews:
+   build command npm run build; deploy npx wrangler deploy -c wrangler.site.jsonc;
+   preview npx wrangler preview -c wrangler.site.jsonc; root /; Node 22.20.0.
+3. Trigger a real branch build and inspect its resulting hosted content. A manual
+   wrangler deploy validates packaging/hosting, not the automatic Git pipeline.
+4. Disable Pages automatic production deployments before merging this source move.
+   Keep its current production deployment online; its old root-output build is no
+   longer suitable for the reorganized repository. Save Pages settings for rollback.
+5. Merge only after an explicit publishing request. Verify the master Worker build.
+6. Transfer production domains only as the final separately approved step. Verify
+   TLS, redirects, root/www behavior, maps, contact/payments, and rollback then.
 
-For a renamed clone: git branch -m main master; git fetch origin; git branch
---set-upstream-to=origin/master master; git remote set-head origin -a. Those are
-one-time clone updates, not commands to run on an arbitrary editing branch.
+The current Wrangler OAuth session deploys Workers but the Workers Builds API
+returns 403. Configuring the Git connection requires dashboard access or a user-owned
+API token with Workers Builds Configuration: Edit (and Workers Scripts: Read).
+Do not copy OAuth credentials into GitHub secrets or commit them to the repository.
+Production branch protection is deferred; no separate deploy branch is introduced.
 
-## Preparation verification
+## Known content limitations
 
-- Clean npm ci and dependency audit: passed, zero reported vulnerabilities.
-- Build and baseline check: passed; all eight HTML/CSS sources unchanged.
-- All seven pages, stylesheet/image bytes, .html redirects, and missing/private
-  file 404 responses: verified through local Wrangler HTTP requests.
-- Contact and directions pages: inspected in the in-app browser through Wrangler.
-- Repeated edits, source deletion cleanup, and shutdown/port release: verified in
-  disposable copies using the actual Node binary (not the Volta launcher shim).
-- Test Worker deploy --dry-run: passed, 16 public files packaged.
-- Four existing content warnings remain as documented in the main README.
-- Pages production and source branches: master, verified via authenticated API.
-- Hosted test Worker created: marlev-site-preview.
-  URL: https://marlev-site-preview.vlad-sadovsky.workers.dev/
-  Version: b58b86db-4d20-466c-befc-8132d42743a1.
-- Hosted pages, exact CSS/banner bytes, and private/unknown-file 404s: passed.
-- The test Worker has no production custom domains and is manually deployed;
-  Git-connected builds remain a later step before production cutover.
-- Workers is the agreed long-term target for all project surfaces. Cloudflare
-  recommends Workers for new projects; keeping Pages now is only transitional.
+Formspree still contains YOUR_FORM_ID; three article fragments remain absent.
+The supplied payment password gate is client-side only, not actual authentication.
+No payment/contact submissions are performed during testing. Editorial changes are
+preserved; owner review of those business details precedes publication.

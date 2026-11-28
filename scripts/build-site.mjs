@@ -1,15 +1,31 @@
-import { cp, mkdir, readdir, rm, mkdtemp, lstat } from 'node:fs/promises';
+import { cp, mkdir, readdir, rm, mkdtemp } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
+export const site = path.join(root, 'site');
 export const output = path.join(root, 'dist');
-const rootAssets = new Set(['robots.txt', 'sitemap.xml', 'favicon.ico', '_headers', '_redirects']);
-const imageExtensions = new Set(['.gif', '.jpg', '.jpeg', '.png', '.webp', '.svg', '.avif', '.ico']);
+const publicExtensions = new Set([
+  '.html', '.css', '.js', '.mjs', '.json', '.gif', '.jpg', '.jpeg', '.png', '.webp',
+  '.svg', '.avif', '.ico', '.mp3', '.ogg', '.wav', '.mp4', '.webm', '.pdf', '.woff', '.woff2',
+]);
+const publicNames = new Set(['robots.txt', 'sitemap.xml', '_headers', '_redirects']);
 
-export function isRootAsset(name) {
-  return /\.(html|css)$/i.test(name) || rootAssets.has(name);
+function isPublicFile(name) {
+  return !name.startsWith('.') && (publicNames.has(name) || publicExtensions.has(path.extname(name).toLowerCase()));
+}
+
+async function stagePublic(source, destination) {
+  await mkdir(destination, { recursive: true });
+  for (const entry of await readdir(source, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+    if (entry.isSymbolicLink()) throw new Error(`Public source must not contain symlinks: ${entry.name}`);
+    const from = path.join(source, entry.name);
+    const to = path.join(destination, entry.name);
+    if (entry.isDirectory()) await stagePublic(from, to);
+    else if (entry.isFile() && isPublicFile(entry.name)) await cp(from, to);
+  }
 }
 
 async function syncDirectory(source, destination) {
@@ -28,30 +44,12 @@ async function syncDirectory(source, destination) {
 }
 
 export async function buildSite() {
-  // Generate output only: source HTML/CSS remains at its existing path until
-  // the external editing pass is imported. Never serve the repository root.
   const staging = await mkdtemp(path.join(os.tmpdir(), 'marlev-public-'));
   try {
-    let count = 0;
-    for (const entry of await readdir(root, { withFileTypes: true })) {
-      if (entry.isFile() && isRootAsset(entry.name)) {
-        await cp(path.join(root, entry.name), path.join(staging, entry.name));
-        count++;
-      }
-    }
-    const images = path.join(root, 'images');
-    await cp(images, path.join(staging, 'images'), {
-      recursive: true,
-      filter: async (source) => {
-        const stat = await lstat(source);
-        if (stat.isSymbolicLink()) return false;
-        return stat.isDirectory() || imageExtensions.has(path.extname(source).toLowerCase());
-      },
-    });
-    // Keep the served directory itself in place: replacing it invalidates
-    // Wrangler's asset watcher. Sync only after the next output is prepared.
+    await stagePublic(site, staging);
+    // Keep the served directory in place so Wrangler can watch later rebuilds.
     await syncDirectory(staging, output);
-    console.log(`Prepared dist/: ${count} root assets plus images (source files unchanged).`);
+    console.log('Prepared dist/ from site/ (public assets only; source unchanged).');
   } finally {
     await rm(staging, { recursive: true, force: true });
   }
