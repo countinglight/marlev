@@ -119,6 +119,10 @@ nav ul li a.active {
     background-color: var(--secondary-color);
 }
 
+.nav-toggle {
+    display: none;
+}
+
 /* Main Content */
 main {
     padding: 40px 0;
@@ -610,13 +614,75 @@ footer {
         font-size: 1.5rem;
     }
 
+    nav {
+        position: static;
+    }
+
+    nav .container {
+        padding: 0;
+    }
+
+    .nav-toggle {
+        width: 100%;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 0;
+        padding: 12px 15px;
+        background: transparent;
+        color: white;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .nav-toggle:focus-visible {
+        outline: 3px solid var(--accent-color);
+        outline-offset: -3px;
+    }
+
+    .nav-toggle-icon {
+        width: 20px;
+        display: grid;
+        gap: 4px;
+    }
+
+    .nav-toggle-icon span {
+        height: 2px;
+        background: currentColor;
+        border-radius: 1px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    nav.menu-open .nav-toggle-icon span:first-child {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    nav.menu-open .nav-toggle-icon span:nth-child(2) {
+        opacity: 0;
+    }
+
+    nav.menu-open .nav-toggle-icon span:last-child {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
     nav ul {
         flex-direction: column;
     }
 
+    .js nav ul {
+        display: none;
+    }
+
+    .js nav.menu-open ul {
+        display: flex;
+    }
+
     nav ul li a {
         border-bottom: 1px solid rgba(255,255,255,0.1);
-        padding: 12px 15px;
+        padding: 14px 20px;
     }
 
     .content-section {
@@ -654,11 +720,6 @@ footer {
 
     .site-title {
         font-size: 1.3rem;
-    }
-
-    nav ul li a {
-        padding: 10px;
-        font-size: 0.9rem;
     }
 
     .content-section {

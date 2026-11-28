@@ -7,6 +7,7 @@
     <meta name="keywords" content="contact homeopath, Redmond homeopathy, schedule appointment, Athena Holistic Health">
     <title>Contact Me - Athena Holistic Health</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="menu.js" defer></script>
 </head>
 <body>
     <header>
@@ -21,7 +22,11 @@
 
     <nav>
         <div class="container">
-            <ul>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>Menu</span>
+            </button>
+            <ul id="site-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about-homeopathy.html">About Homeopathy</a></li>
                 <li><a href="acute-conditions.html">Acute Conditions</a></li>
