@@ -15,7 +15,7 @@
     "dev": "node scripts/preview-site.mjs",
     "preview:site": "node scripts/preview-site.mjs",
     "preview:built": "wrangler dev --config wrangler.site.jsonc --ip 127.0.0.1 --port 8787",
-    "deploy:test": "npm run build && wrangler deploy --config wrangler.site.jsonc",
+    "deploy:site": "npm run build && wrangler deploy --config wrangler.site.jsonc",
     "check:dist": "python3 scripts/check_site.py --root dist",
     "verify:import": "node scripts/verify-import.mjs",
     "preview:branch": "npm run build && wrangler preview --config wrangler.site.jsonc"

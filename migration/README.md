@@ -32,36 +32,25 @@ Markdown/development files, refuses symlinks, and removes stale output. It does 
 publish apps/ automatically; add explicit output composition with the first app.
 Relative URLs stay unchanged because site/ contents are published at the URL root.
 
-## Hosting and final cutover
+## Hosting status
 
-Existing Pages project: marlev. Production/source branches: master. Existing domains:
-marlev.countinglight.com and marlev.pages.dev. www.marlev.com is not attached to it;
-its existing hosting/DNS needs separate confirmation. No domains have been moved.
-Test Worker: https://marlev-site-preview.vlad-sadovsky.workers.dev/.
+PR #3 merged into master as b21370e and its automatic Worker deployment passed.
+The current public domain marlev.countinglight.com now serves that website through
+Worker marlev-site-preview. Its historical internal name does not imply test-only
+hosting. The custom domain is declared in wrangler.site.jsonc.
 
-Workers is the agreed target for all project surfaces. Before merging PR #3:
+Pages automatic production deployments are disabled. The former Pages domain
+attachment and CNAME to marlev.pages.dev were removed; Wrangler created the Worker
+custom domain. The old Pages deployment remains available at marlev.pages.dev for
+rollback. No Pages project or historical deployment was deleted.
 
-1. Verify imported desktop/mobile pages, local links, audio, payment dialog display,
-   form targets, .html/clean URLs, 404 handling, and private-file exclusion.
-2. Worker Git-connected builds are now configured for master and branch previews:
-   build command npm run build; deploy npx wrangler deploy -c wrangler.site.jsonc;
-   preview npx wrangler preview -c wrangler.site.jsonc; root /; Node 22.20.0.
-3. Automatic branch build verified successfully for 8602e98. All eight pages and
-   CSS match source at https://vlads-dev-marlev-site-preview.vlad-sadovsky.workers.dev/.
-   Private repository paths return 404; see verification.md for build identifiers.
-4. Disable Pages automatic production deployments before merging this source move.
-   Keep its current production deployment online; its old root-output build is no
-   longer suitable for the reorganized repository. Save Pages settings for rollback.
-5. Merge only after an explicit publishing request. Verify the master Worker build.
-6. Transfer production domains only as the final separately approved step. Verify
-   TLS, redirects, root/www behavior, maps, contact/payments, and rollback then.
+Only a future move to marlev.com / www.marlev.com is deferred. Normal approved
+publishing means merge into master and verify marlev.countinglight.com.
 
-The Worker Git connection was completed in Chrome using the existing Cloudflare
-GitHub app and existing build token. No new token or expanded token permissions
-were created. The checked-in .nvmrc supplies Node 22.20.0. The Wrangler OAuth
-session itself still does not grant the Builds API configuration scope; dashboard
-access was used for configuration. No credentials were copied into the repository.
-Production branch protection is deferred; no separate deploy branch is introduced.
+Worker Git builds use npm run build, then npx wrangler deploy -c wrangler.site.jsonc
+on master; branches use npx wrangler preview -c wrangler.site.jsonc. Node 22.20.0.
+GitHub app connection and existing build token are retained. No credentials are
+stored in the repository. Branch protection remains intentionally deferred.
 
 ## Known content limitations
 
